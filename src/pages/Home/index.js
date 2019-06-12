@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from './redux/actions';
+import * as selectors from './redux/reducer';
 
-const Home  = () =>{
-  return(
-      <div>Hello from home page</div>
-  )
+class Home extends Component{
+    componentDidMount(){
+        this.props.dispatch(actions.getBankData('bangalore'));
+    }
+    render(){
+        const { users } = this.props;
+        console.log(users);
+        return(
+            <div>Hello from home page</div>
+        )
+  }
 }
-
-export default Home;
+function mapStateToProps(state) {
+    return selectors.getAllValues(state);
+  }
+export default connect(mapStateToProps)(Home);

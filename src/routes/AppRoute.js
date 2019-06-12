@@ -7,10 +7,11 @@ class  AppRoutes extends React.Component{
     render(){
         const { match } = this.props;
             return(
-                    <Switch>
-                        <Route path={`${match.path}home`} component={Home}/>
-                        <Route path={`${match.path}bank/:id`} component={BankDetails}/>
-                    </Switch>
-            )}
+                <Switch>
+                    <Route path={`${match.path}home`} component={Home}/>
+                    <Route path={`${match.path}bank/:id`} component={BankDetails}/>
+                </Switch>
+            )
+        }
 }
 export default AppRoutes;
