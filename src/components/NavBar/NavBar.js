@@ -18,13 +18,16 @@ const styles = theme =>({
           display: 'block',
         },
       },
+      AppContainer:{
+        background:'#3379b7'
+      }
       
 })
 
 export default withStyles(styles)(({classes}) =>{
  return(
     <div className={classes.root}>
-      <AppBar position="static" >
+      <AppBar position="static"className={classes.AppContainer} >
         <Toolbar>
           <Link to={links.home()} style={{textDecoration:'none'}}>
             <Typography className={classes.title} variant="h6" noWrap>

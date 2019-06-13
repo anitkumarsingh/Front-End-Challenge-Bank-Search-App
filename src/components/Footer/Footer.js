@@ -17,16 +17,19 @@ const styles = theme =>({
           display: 'block',
         },
       },
+      FootContainer:{
+        background:'#3379b7'
+      }
 })
 
 
 export default withStyles(styles)(({classes}) =>{
     return(
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.FootContainer}>
                 <Toolbar>
                 <Typography className={classes.title} variant="h6" noWrap>
-                    Develop By Anit Kumar <span role="img" aria-label="happy mode">😄</span>
+                    Developed By Anit Kumar <span role="img" aria-label="happy mode">😄</span>
                 </Typography>
                 </Toolbar>
             </AppBar>

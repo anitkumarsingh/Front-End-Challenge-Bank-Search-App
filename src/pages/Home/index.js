@@ -2,96 +2,36 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import * as selectors from './redux/reducer';
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import Pagination from '../../components/Pagination/Pagination';
 import links from '../../utility/Links';
-
-const { SearchBar } = Search;
-
-const columns = [{
-  dataField: 'ifsc',
-  text: 'IFSE',
-}, {
-  dataField: 'bank_name',
-  text: 'Bank Name',
-}, 
-{
-  dataField: 'branch',
-  text: 'Branch',
-},
-{
-  dataField: 'address',
-  text: 'Address',
-},
-{
-    dataField: 'bank_id',
-    text: 'Bank ID',
-  },
-  {
-    dataField: 'city',
-    text: 'City',
-  },
-  {
-    dataField: 'district',
-    text: 'District',
-  },
-  {
-    dataField: 'state',
-    text: 'State',
-  }
-];
-
-const options = {
-  paginationSize: 1,
-  pageStartIndex: 1,
-  firstPageText: '<<',
-  prePageText: '<',
-  nextPageText: '>',
-  lastPageText: '>>',
-  nextPageTitle: 'First page',
-  prePageTitle: 'Pre page',
-  firstPageTitle: 'Next page',
-  lastPageTitle: 'Last page',
-  showTotal: false,
-  sizePerPageList: [{
-    text: '10', value: 10
-  }, {
-    text: '20', value: 20
-  },
-  {
-    text: '30', value: 30
-  },
-  {
-    text: '100', value: 100
-  },
-  {
-    text: '500', value: 500
-  }
-]
-};
+import { Link } from 'react-router-dom';
+import CachedSearch from '../../components/CachedSearch/CachedSearch';
+import Loader from '../../components/Loader/Loader'
+import { OutlinedInput,
+         InputLabel,
+         FormControl,
+         Select,
+         InputBase,
+         withStyles,
+         Grid 
+} from '@material-ui/core';
 
 const styles = theme =>({
     root: {
         flexGrow: 1,
       },
-      menuButton: {
-        marginRight: theme.spacing(2),
-      },
       title: {
         flexGrow: 1,
         display: 'none',
+        marginLeft:35,
         [theme.breakpoints.up('sm')]: {
           display: 'block',
         },
       },
       search: {
         position: 'relative',
-        float:'right',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: fade(theme.palette.common.white, 0.15),
         '&:hover': {
@@ -108,7 +48,6 @@ const styles = theme =>({
         width: theme.spacing(7),
         height: '100%',
         position: 'absolute',
-        right:'0',
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
@@ -118,7 +57,7 @@ const styles = theme =>({
         color: 'inherit',
       },
       inputInput: {
-        padding: theme.spacing(1, 1, 1, 7),
+        padding: theme.spacing(7),
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
@@ -131,47 +70,221 @@ const styles = theme =>({
       paginationContainer:{
         margin:'50px 20px 10px 25px'
       }
+      ,
+      formControl: {
+        margin: theme.spacing(3),
+        minWidth: 120,
+      },
+      selectEmpty: {
+        marginTop: theme.spacing(2),
+      },
+      exploreBtn: {
+        height: '30px',
+        backgroundColor: 'white',
+        top: '12px',
+      },
+      exploreTxt: {
+        color: 'black',
+        fontSize: '20px',
+        fontWeight: 600,
+        lineHeight: '20px',
+        letterSpacing: '0.25px',
+        fontFamily: 'Catamaran, Roboto, Helvetica, Arial, sans-serif',
+      },
   })
 
 class Home extends Component{
-    componentDidMount(){
-        this.props.dispatch(actions.getBankData('bangalore'));
-    }
+ constructor(){
+   super()
+      this.state = {
+        pageOfItems: [],
+        cityName:'Bangalore',
+        query: "",
+        results: [],
+        pageSize:10,
+        labelWidth:0,
+        loadText:'Please Wait Its Loading....'
+    };
+ }
+  componentDidMount(){
+      this.props.dispatch(actions.getBankData('bangalore'));
+  }
+  onChangePage =(pageOfItems)=>{
+    this.setState({ pageOfItems: pageOfItems });
+}
+  handleChange = event => {
+    this.props.dispatch(actions.getBankData(event.target.value));
+    this.setState({
+      cityName:event.target.value,
+      loadText:`Please wait loading Bank's details from ` + event.target.value
+    })
+  };
+  handleQueryChange =(query)=>{
+    this.setState({ query });
+    this.CachedSearch.changeQuery(query);
+  }
+
+  handleResults=(results)=>{
+    this.setState({ pageOfItems:results });
+  }
+  handlePageSizeChange = event => {
+    this.setState({ pageSize:event.target.value})
+  };
     render(){
-        const { bank,classes } = this.props;
+        const { bank,classes,loading} = this.props;
         console.log(bank);
+        const search = query =>
+          new Promise((resolve, reject) => {
+            const regex = new RegExp(`^${query}`, "i");
+            console.log(bank);
+            const results = bank.filter(dataField => {
+              return (
+                regex.test(dataField.ifsc) ||
+                regex.test(dataField.bank_name) ||
+                regex.test(dataField.bank_id) ||
+                regex.test(dataField.branch) ||
+                regex.test(dataField.address) ||
+                regex.test(dataField.city) ||
+                regex.test(dataField.state) 
+              );
+            });
+            resolve(results);
+          });
+          this.CachedSearch = new CachedSearch(search, this.handleResults);
+         
+          if(loading){
+            return<Loader loadText={this.state.loadText}/>
+          }else{
         return(
-            <>
-                <ToolkitProvider
-                  keyField='bank_name'
-                  data={ bank }
-                  columns={ columns }
-                  search
-                 >
-                    {
-                      props => (
-                        <div className={classes.paginationContainer}>
-                         <div className={classes.search}>
-                          <div className={classes.searchIcon}>
-                            <SearchIcon />
-                          </div>
-                          <SearchBar { ...props.searchProps }   classes={{
-                              root: classes.inputRoot,
-                              input: classes.inputInput,
-                            }}/>
-                        </div>
-                        <Link to={links.bankDetails(bank.bank_id)} style={{textDecoration:'none'}}>
-                          <BootstrapTable
-                            { ...props.baseProps }
-                            pagination={ paginationFactory(options)}
+            <div>  <br/><br/>
+                    <div className="container">
+                     <Grid container
+                              direction="row"
+                              justify="space-between"
+                              alignItems="center"
+                              >
+                      <Grid item>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel
+                            ref={ref => {
+                              this.InputLabelRef = ref;
+                            }}
+                            htmlFor="explore-city"
                           />
-                          </Link>
-                        </div>
-                      )
-                    }
-              </ToolkitProvider>
-            </>
+                          <Select
+                            native
+                            value={this.state.cityName}
+                            onChange={this.handleChange}
+                            style={{ height: '30px' }}
+                            input={
+                              <OutlinedInput
+                                name="city"
+                                labelWidth={this.state.labelWidth}
+                                id="explore-city"
+                              />
+                            }
+                          >
+                            {['Bangalore','Mysore','Mumbai','Delhi','Patna'].map(city => (
+                              <option key={city + 'i'} value={city}>
+                                {city}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        </Grid>
+                    <Grid item>
+                    <div className={classes.search}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        placeholder="Search…"
+                        onChange={({ target: { value } }) => this.handleQueryChange(value)}
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'Search' }}
+                      />
+                    </div>
+                    </Grid>
+                    </Grid>
+                    </div>
+            <br/><br/>
+                <div className="container">
+                    <div className="text-left">
+                        <table className="table table-dark table-responsive">
+                            <thead className="thead-dark">
+                                <tr>
+                                <th scope="col">IFSC</th>
+                                <th scope="col">Branch Name</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Branch</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">District</th>
+                                <th scope="col">State</th>
+                                </tr>
+                            </thead>
+                           { 
+                          this.state.pageOfItems.map(item =>
+                            <tbody key={'i'+item.ifsc}>
+                              <tr>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.ifsc}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.bank_name}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.bank_id}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.branch}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.address}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.district}</Link></td>
+                                <td><Link to={links.bankDetails(item.bank_id)}>{item.state}</Link></td>
+                              </tr>
+                        </tbody>
+                        )
+                           }
+                            </table>
+                        <Grid container
+                              direction="row"
+                              justify="space-between"
+                              alignItems="center"
+                              >
+                          <Grid item>
+                        <Pagination items={bank} onChangePage={this.onChangePage} pageSize={Number(this.state.pageSize)}/>
+                        </Grid>
+                        <Grid item>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel
+                            ref={ref => {
+                              this.InputPageSizeRef = ref;
+                            }}
+                            htmlFor="pageDataSize"
+                          />
+                          <Select
+                            native
+                            value={this.state.pageSize}
+                            onChange={this.handlePageSizeChange}
+                            style={{ height: '30px' }}
+                            input={
+                              <OutlinedInput
+                                name="pageSize"
+                                labelWidth={this.state.labelWidth}
+                                id="pageDataSize"
+                              />
+                            }
+                          >
+                            {[10,50,100,200,500].map(pgSize => (
+                              <option key={pgSize + 'i'} value={pgSize}>
+                                {pgSize}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        </Grid>
+                        </Grid> 
+                    </div>
+                </div>
+                <br/><br/>
+            </div>
         )
+      }
   }
 }
 function mapStateToProps(state) {
