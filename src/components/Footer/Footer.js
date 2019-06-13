@@ -12,6 +12,7 @@ const styles = theme =>({
         flexGrow: 1,
         textAlign:'center',
         color:'white',
+        fontSize:'1.2em',
         display: 'none',
         [theme.breakpoints.up('sm')]: {
           display: 'block',

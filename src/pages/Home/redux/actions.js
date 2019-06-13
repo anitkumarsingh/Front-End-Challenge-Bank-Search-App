@@ -9,7 +9,7 @@ export function getBankData(city) {
     });
     try {
       const bank = await api.getBankDetails(city);
-      console.log(bank)
+      // console.log(bank)
       dispatch({
         type: types.LOADED,
         bank,

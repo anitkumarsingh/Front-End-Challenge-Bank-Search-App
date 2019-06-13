@@ -36,7 +36,7 @@ class Pagination extends React.Component {
     setPage(page) {
         var { items, pageSize } = this.props;
         // const { pageSize } = this.state.pageSize;
-        console.log(this.props.pageSize);
+        // console.log(this.props.pageSize);
         var pager = this.state.pager;
 
         if (page < 1 || page > pager.totalPages) {
@@ -57,7 +57,7 @@ class Pagination extends React.Component {
     }
 
     getPager(totalItems, currentPage, pageSize) {
-        console.log(pageSize,totalItems,currentPage);
+        // console.log(pageSize,totalItems,currentPage);
         // Current page starts from page 1
         currentPage = currentPage || 1;
 

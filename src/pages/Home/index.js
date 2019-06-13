@@ -46,6 +46,7 @@ const styles = theme =>({
       },
       searchIcon: {
         width: theme.spacing(7),
+        fontSize:'14px',
         height: '100%',
         position: 'absolute',
         pointerEvents: 'none',
@@ -60,12 +61,19 @@ const styles = theme =>({
         padding: theme.spacing(7),
         transition: theme.transitions.create('width'),
         width: '100%',
+        fontSize:'14px',
         [theme.breakpoints.up('sm')]: {
           width: 120,
           '&:focus': {
             width: 200,
+            '&::placeholder':{
+              color: '#ec407a',
+              opacity: 1,
+              fontSize:'14px'
+            }
           },
         },
+       
       },
       paginationContainer:{
         margin:'50px 20px 10px 25px'
@@ -78,19 +86,15 @@ const styles = theme =>({
       selectEmpty: {
         marginTop: theme.spacing(2),
       },
-      exploreBtn: {
-        height: '30px',
-        backgroundColor: 'white',
-        top: '12px',
+      selectPaddingOpt:{
+        margin:'10px',
+        fontSize:'14px',
+        color: '#ec407a',
       },
-      exploreTxt: {
-        color: 'black',
-        fontSize: '20px',
-        fontWeight: 600,
-        lineHeight: '20px',
-        letterSpacing: '0.25px',
-        fontFamily: 'Catamaran, Roboto, Helvetica, Arial, sans-serif',
-      },
+      tbleHeader:{
+        backgroundColor: fade('#ec407a', 0.75),
+        color:'white',
+      }
   })
 
 class Home extends Component{
@@ -132,7 +136,7 @@ class Home extends Component{
   };
     render(){
         const { bank,classes,loading} = this.props;
-        console.log(bank);
+        // console.log(bank);
         const search = query =>
           new Promise((resolve, reject) => {
             const regex = new RegExp(`^${query}`, "i");
@@ -151,13 +155,15 @@ class Home extends Component{
             resolve(results);
           });
           this.CachedSearch = new CachedSearch(search, this.handleResults);
-         
+          // Storing data in localstorage
+          localStorage.setItem('bankLocalData',JSON.stringify(bank));
           if(loading){
             return<Loader loadText={this.state.loadText}/>
           }else{
         return(
-            <div>  <br/><br/>
-                    <div className="container">
+            <>  
+               <br/>
+                    <div className={['container'].join(' ')}>
                      <Grid container
                               direction="row"
                               justify="space-between"
@@ -175,7 +181,7 @@ class Home extends Component{
                             native
                             value={this.state.cityName}
                             onChange={this.handleChange}
-                            style={{ height: '30px' }}
+                            style={{ height: '30px',fontSize:'14px'}}
                             input={
                               <OutlinedInput
                                 name="city"
@@ -185,7 +191,7 @@ class Home extends Component{
                             }
                           >
                             {['Bangalore','Mysore','Mumbai','Delhi','Patna'].map(city => (
-                              <option key={city + 'i'} value={city}>
+                              <option key={city + 'i'} value={city} className={classes.selectPaddingOpt}>
                                 {city}
                               </option>
                             ))}
@@ -211,10 +217,10 @@ class Home extends Component{
                     </Grid>
                     </div>
             <br/><br/>
-                <div className="container">
-                    <div className="text-left">
-                        <table className="table table-dark table-responsive">
-                            <thead className="thead-dark">
+                <div className={["container"].join(' ')}>
+                    <div className={["text-left"].join(' ')}>
+                        <table className={["table table-dark table-responsive"].join(' ')}>
+                            <thead className={["thead-dark",classes.tbleHeader].join(' ')} >
                                 <tr>
                                 <th scope="col">IFSC</th>
                                 <th scope="col">Branch Name</th>
@@ -229,13 +235,41 @@ class Home extends Component{
                           this.state.pageOfItems.map(item =>
                             <tbody key={'i'+item.ifsc}>
                               <tr>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.ifsc}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.bank_name}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.bank_id}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.branch}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.address}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.district}</Link></td>
-                                <td><Link to={links.bankDetails(item.bank_id)}>{item.state}</Link></td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.ifsc}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.bank_name}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.bank_id}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.branch}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.address}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.district}
+                                    </Link>
+                                  </td>
+                                <td>
+                                    <Link to={links.bankDetails(item.bank_id)}>
+                                      {item.state}
+                                    </Link>
+                                  </td>
                               </tr>
                         </tbody>
                         )
@@ -271,7 +305,7 @@ class Home extends Component{
                             }
                           >
                             {[10,50,100,200,500].map(pgSize => (
-                              <option key={pgSize + 'i'} value={pgSize}>
+                              <option key={pgSize + 'i'} value={pgSize} className={classes.selectPaddingOpt}>
                                 {pgSize}
                               </option>
                             ))}
@@ -282,7 +316,7 @@ class Home extends Component{
                     </div>
                 </div>
                 <br/><br/>
-            </div>
+            </>
         )
       }
   }

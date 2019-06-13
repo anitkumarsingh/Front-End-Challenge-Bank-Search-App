@@ -7,7 +7,7 @@ class API {
     try {
       let response = await fetch(`${API_DOMAIN}/banks?city=${transformCityCase}`);
       let results = await response.json();
-      console.log(response);
+      // console.log(response);
       return results;
     } catch (error) {
       console.log(error);
