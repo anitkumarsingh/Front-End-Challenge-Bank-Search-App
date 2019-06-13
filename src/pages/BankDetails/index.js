@@ -55,7 +55,7 @@ class BankDetails extends Component{
                 <Card className={classes.card} >
                     <CardMedia
                         className={classes.media}
-                        image="/Images/bank2.jpeg"
+                        image="Images/bank2.jpeg"
                         title={items.bank_name}
                     />
                     <CardContent>
