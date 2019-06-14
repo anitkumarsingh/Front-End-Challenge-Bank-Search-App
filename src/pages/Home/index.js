@@ -163,42 +163,44 @@ class Home extends Component{
         return(
             <>  
                <br/>
-                    <div className={['container'].join(' ')}>
-                     <Grid container
-                              direction="row"
-                              justify="space-between"
-                              alignItems="center"
-                              >
-                      <Grid item>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel
-                            ref={ref => {
-                              this.InputLabelRef = ref;
-                            }}
-                            htmlFor="explore-city"
-                          />
-                          <Select
-                            native
-                            value={this.state.cityName}
-                            onChange={this.handleChange}
-                            style={{ height: '30px',fontSize:'14px'}}
-                            input={
-                              <OutlinedInput
-                                name="city"
-                                labelWidth={this.state.labelWidth}
-                                id="explore-city"
-                              />
-                            }
+                <div className={['container'].join(' ')}>
+                  <Grid container
+                          direction="row"
+                          justify="space-between"
+                          alignItems="center"
                           >
-                            {['Bangalore','Mysore','Mumbai','Delhi','Patna'].map(city => (
-                              <option key={city + 'i'} value={city} className={classes.selectPaddingOpt}>
-                                {city}
-                              </option>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        </Grid>
                     <Grid item>
+                      <FormControl variant="outlined" 
+                                   className={classes.formControl}
+                                   >
+                            <InputLabel
+                              ref={ref => {
+                                this.InputLabelRef = ref;
+                              }}
+                              htmlFor="explore-city"
+                            />
+                            <Select
+                              native
+                              value={this.state.cityName}
+                              onChange={this.handleChange}
+                              style={{ height: '30px',fontSize:'14px'}}
+                              input={
+                                <OutlinedInput
+                                  name="city"
+                                  labelWidth={this.state.labelWidth}
+                                  id="explore-city"
+                                />
+                              }
+                            >
+                              {['Bangalore','Mysore','Mumbai','Delhi','Patna'].map(city => (
+                                <option key={city + 'i'} value={city} className={classes.selectPaddingOpt}>
+                                  {city}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                      </Grid>
+                  <Grid item>
                     <div className={classes.search}>
                       <div className={classes.searchIcon}>
                         <SearchIcon />
@@ -213,22 +215,22 @@ class Home extends Component{
                         inputProps={{ 'aria-label': 'Search' }}
                       />
                     </div>
-                    </Grid>
-                    </Grid>
-                    </div>
+                  </Grid>
+                 </Grid>
+              </div>
             <br/><br/>
                 <div className={["container"].join(' ')}>
                     <div className={["text-left"].join(' ')}>
                         <table className={["table table-dark table-responsive"].join(' ')}>
                             <thead className={["thead-dark",classes.tbleHeader].join(' ')} >
                                 <tr>
-                                <th scope="col">IFSC</th>
-                                <th scope="col">Branch Name</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Branch</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">District</th>
-                                <th scope="col">State</th>
+                                  <th scope="col">IFSC</th>
+                                  <th scope="col">Branch Name</th>
+                                  <th scope="col">ID</th>
+                                  <th scope="col">Branch</th>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">District</th>
+                                  <th scope="col">State</th>
                                 </tr>
                             </thead>
                            { 
@@ -271,47 +273,48 @@ class Home extends Component{
                                     </Link>
                                   </td>
                               </tr>
-                        </tbody>
-                        )
-                           }
-                            </table>
+                            </tbody>
+                          )}
+                        </table>
                         <Grid container
                               direction="row"
                               justify="space-between"
                               alignItems="center"
                               >
                           <Grid item>
-                        <Pagination items={bank} onChangePage={this.onChangePage} pageSize={Number(this.state.pageSize)}/>
-                        </Grid>
-                        <Grid item>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel
-                            ref={ref => {
-                              this.InputPageSizeRef = ref;
-                            }}
-                            htmlFor="pageDataSize"
-                          />
-                          <Select
-                            native
-                            value={this.state.pageSize}
-                            onChange={this.handlePageSizeChange}
-                            style={{ height: '30px' }}
-                            input={
-                              <OutlinedInput
-                                name="pageSize"
-                                labelWidth={this.state.labelWidth}
-                                id="pageDataSize"
+                            <Pagination items={bank} onChangePage={this.onChangePage} 
+                                        pageSize={Number(this.state.pageSize)}
+                                        />
+                          </Grid>
+                          <Grid item>
+                            <FormControl variant="outlined" className={classes.formControl}>
+                              <InputLabel
+                                ref={ref => {
+                                  this.InputPageSizeRef = ref;
+                                }}
+                                htmlFor="pageDataSize"
                               />
-                            }
-                          >
-                            {[10,50,100,200,500].map(pgSize => (
-                              <option key={pgSize + 'i'} value={pgSize} className={classes.selectPaddingOpt}>
-                                {pgSize}
-                              </option>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        </Grid>
+                              <Select
+                                native
+                                value={this.state.pageSize}
+                                onChange={this.handlePageSizeChange}
+                                style={{ height: '30px' }}
+                                input={
+                                  <OutlinedInput
+                                    name="pageSize"
+                                    labelWidth={this.state.labelWidth}
+                                    id="pageDataSize"
+                                  />
+                                }
+                              >
+                                {[10,50,100,200,500].map(pgSize => (
+                                  <option key={pgSize + 'i'} value={pgSize} className={classes.selectPaddingOpt}>
+                                    {pgSize}
+                                  </option>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </Grid>
                         </Grid> 
                     </div>
                 </div>
