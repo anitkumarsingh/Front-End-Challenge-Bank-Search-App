@@ -8,7 +8,10 @@ import Pagination from '../../components/Pagination/Pagination';
 import links from '../../utility/Links';
 import { Link } from 'react-router-dom';
 import CachedSearch from '../../components/CachedSearch/CachedSearch';
-import Loader from '../../components/Loader/Loader'
+import Loader from '../../components/Loader/Loader';
+import FavBnks from '../FavouriteBanks/index';
+import './index.css';
+
 import { OutlinedInput,
          InputLabel,
          FormControl,
@@ -94,9 +97,10 @@ const styles = theme =>({
       tbleHeader:{
         backgroundColor: fade('#ec407a', 0.75),
         color:'white',
-      }
+      },
   })
 
+ 
 class Home extends Component{
  constructor(){
    super()
@@ -107,7 +111,10 @@ class Home extends Component{
         results: [],
         pageSize:10,
         labelWidth:0,
-        loadText:'Please Wait Its Loading....'
+        loadText:'Please Wait Its Loading....',
+        myFavoriteBanks:[],
+        isFaved: false,
+        color:'black'
     };
  }
   componentDidMount(){
@@ -134,13 +141,23 @@ class Home extends Component{
   handlePageSizeChange = event => {
     this.setState({ pageSize:event.target.value})
   };
+
+  addFavoriteChange(ifsc) {
+    const retrievingData = JSON.parse(localStorage.getItem('bankLocalData'))
+    const newArray = retrievingData.filter(element => element.ifsc === ifsc);
+    const BankName = newArray.map(item=>item.bank_name);
+    this.setState({myFavoriteBanks:[...this.state.myFavoriteBanks,BankName]})
+  
+    this.state.myFavoriteBanks.forEach(function() {
+    document.getElementById(ifsc).className = 'fav';
+   });
+  }
     render(){
         const { bank,classes,loading} = this.props;
         // console.log(bank);
         const search = query =>
           new Promise((resolve, reject) => {
             const regex = new RegExp(`^${query}`, "i");
-            console.log(bank);
             const results = bank.filter(dataField => {
               return (
                 regex.test(dataField.ifsc) ||
@@ -235,12 +252,11 @@ class Home extends Component{
                             </thead>
                            { 
                           this.state.pageOfItems.map(item =>
-                            <tbody key={'i'+item.ifsc}>
-                              <tr>
-                                <td>
-                                    <Link to={links.bankDetails(item.bank_id)}>
+                            <tbody key={'i'+item.ifsc} >
+                              <tr className="list">
+                                <td onClick={()=>this.addFavoriteChange(item.ifsc)} 
+                                    style={{color:'#23527c'}} id={item.ifsc}>
                                       {item.ifsc}
-                                    </Link>
                                   </td>
                                 <td>
                                     <Link to={links.bankDetails(item.bank_id)}>
@@ -319,6 +335,9 @@ class Home extends Component{
                     </div>
                 </div>
                 <br/><br/>
+                <div>
+                  <FavBnks data={this.state.myFavoriteBanks}/>
+                </div>
             </>
         )
       }

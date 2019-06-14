@@ -16,12 +16,15 @@ const defaultProps = {
 class Pagination extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { pager: {}};
+        this.state = { pager: {},pageSize:10};
     }
     componentWillMount() {
         if (this.props.items && this.props.items.length) {
             this.setPage(this.props.initialPage);
         }
+    }
+    componentDidMount(){
+        console.log(this.props.pageSize);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -36,7 +39,7 @@ class Pagination extends React.Component {
     setPage(page) {
         var { items, pageSize } = this.props;
         // const { pageSize } = this.state.pageSize;
-        // console.log(this.props.pageSize);
+        console.log(this.props.pageSize);
         var pager = this.state.pager;
 
         if (page < 1 || page > pager.totalPages) {
@@ -132,13 +135,12 @@ class Pagination extends React.Component {
                     <a onClick={() => this.setPage(pager.totalPages)}>Last</a>
                 </li>
             </ul>
-           
         </div>
         );
     }
 }
 
 Pagination.propTypes = propTypes;
-Pagination.defaultProps = defaultProps;
+// Pagination.defaultProps = defaultProps;
 
 export default (Pagination);
