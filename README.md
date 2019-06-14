@@ -1,7 +1,7 @@
 # Front End Challenge-Bank-Search-App
 
 ### What is this ?
-Single page web app that list and search for banks
+A Single page web app that list and search for banks
 
 ### [Live Demo](https://anitkumarsingh.github.io/Fyle-Challenge-Bank-Search-App/)
 
