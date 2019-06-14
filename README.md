@@ -13,7 +13,8 @@ A Single page web app that list and search for banks
 - Html Css And JavaScript
 - CSS in JS
 - Hosting on github pages
-- LocalStorage
+- Local Storage
+- Session Storage
 - Pure Pagination Implemention(No library used)
 - API calls caching  
 
@@ -43,6 +44,9 @@ Open [Localhost](http://localhost:3000) to view it in the browser.
 
 ### Bank Details page
 ![](screenshots/Screenshot_2019-06-13%20Bank%20Search%20by%20Anit(3).png)
+
+### Favourite Bank
+![]((screenshots/Screenshot_2019-06-14%20Bank%20Search%20by%20Anit.png)
 
 
 #### @ Anit Kumar, 2019  :blush:
