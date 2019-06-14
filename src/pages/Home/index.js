@@ -219,9 +219,9 @@ class Home extends Component{
                  </Grid>
               </div>
             <br/><br/>
-                <div className={["container"].join(' ')}>
+                <div className={["container","table-responsive"].join(' ')}>
                     <div className={["text-left"].join(' ')}>
-                        <table className={["table table-dark table-responsive"].join(' ')}>
+                        <table className={["table", "table-dark "].join(' ')}>
                             <thead className={["thead-dark",classes.tbleHeader].join(' ')} >
                                 <tr>
                                   <th scope="col">IFSC</th>
