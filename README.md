@@ -3,7 +3,7 @@
 ### What is this ?
 A Single page web app that list and search for banks
 
-### [Live Demo](https://anitkumarsingh.github.io/Fyle-Challenge-Bank-Search-App/)
+### [Live Demo](https://anitkumarsingh.github.io/Front-End-Challenge-Bank-Search-App/)
 
 ### Technical skills and concept used
 - React
