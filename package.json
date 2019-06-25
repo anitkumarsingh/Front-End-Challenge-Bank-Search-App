@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Anit Kumar",
-  "homepage": "https://anitkumarsingh.github.io/Front-End-Challenge-Bank-Search-App",
+  "homepage": "https://anitkumarsingh.github.io/Fyle-Challenge-Bank-Search-App",
   "dependencies": {
     "@material-ui/core": "^4.1.0",
     "@material-ui/icons": "^4.1.0",
