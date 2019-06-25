@@ -97,7 +97,11 @@ const styles = theme =>({
         color:'white',
       },
       searchPostion:{
-        marginTop:'-95px'
+        marginTop:'-95px',
+        [theme.breakpoints.down('xs')]: {
+          marginTop:'0px',
+        },
+       
       }
   })
 
