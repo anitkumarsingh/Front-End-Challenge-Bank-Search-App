@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from './redux/actions';
-import * as selectors from './redux/reducer';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Pagination from '../../components/Pagination/Pagination';
@@ -10,6 +7,7 @@ import { Link } from 'react-router-dom';
 import CachedSearch from '../../components/CachedSearch/CachedSearch';
 import Loader from '../../components/Loader/Loader';
 import FavBnks from '../FavouriteBanks/index';
+import ErrorPage from '../../components/Error/Error';
 import './index.css';
 
 import { OutlinedInput,
@@ -98,6 +96,9 @@ const styles = theme =>({
         backgroundColor: fade('#ec407a', 0.75),
         color:'white',
       },
+      searchPostion:{
+        marginTop:'-95px'
+      }
   })
 
  
@@ -106,7 +107,7 @@ class Home extends Component{
    super()
       this.state = {
         pageOfItems: [],
-        cityName:'Bangalore',
+        cityName:'BANGALORE',
         query: "",
         results: [],
         pageSize:10,
@@ -117,19 +118,11 @@ class Home extends Component{
         color:'black'
     };
  }
-  componentDidMount(){
-      this.props.dispatch(actions.getBankData('bangalore'));
-  }
+
   onChangePage =(pageOfItems)=>{
     this.setState({ pageOfItems: pageOfItems });
 }
-  handleChange = event => {
-    this.props.dispatch(actions.getBankData(event.target.value));
-    this.setState({
-      cityName:event.target.value,
-      loadText:`Please wait loading Bank's details from ` + event.target.value
-    })
-  };
+ 
   handleQueryChange =(query)=>{
     this.setState({ query });
     this.CachedSearch.changeQuery(query);
@@ -153,8 +146,11 @@ class Home extends Component{
    });
   }
     render(){
-        const { bank,classes,loading} = this.props;
-        // console.log(bank);
+        const { classes,data,} = this.props;
+        if (!data) return null;
+        let bank = data.successPayload;
+
+        // console.log(data)
         const search = query =>
           new Promise((resolve, reject) => {
             const regex = new RegExp(`^${query}`, "i");
@@ -174,48 +170,25 @@ class Home extends Component{
           this.CachedSearch = new CachedSearch(search, this.handleResults);
           // Storing data in localstorage
           localStorage.setItem('bankLocalData',JSON.stringify(bank));
-          if(loading){
+          if(data.fetching){
             return<Loader loadText={this.state.loadText}/>
-          }else{
+          }else if(data.error) {
+            return (
+             <ErrorPage/>
+            );
+          }
+          else{
         return(
             <>  
-               <br/>
-                <div className={['container'].join(' ')}>
+            <div className={['container'].join(' ')}>
                   <Grid container
                           direction="row"
                           justify="space-between"
                           alignItems="center"
+                          className={classes.searchPostion}
                           >
                     <Grid item>
-                      <FormControl variant="outlined" 
-                                   className={classes.formControl}
-                                   >
-                            <InputLabel
-                              ref={ref => {
-                                this.InputLabelRef = ref;
-                              }}
-                              htmlFor="explore-city"
-                            />
-                            <Select
-                              native
-                              value={this.state.cityName}
-                              onChange={this.handleChange}
-                              style={{ height: '30px',fontSize:'14px'}}
-                              input={
-                                <OutlinedInput
-                                  name="city"
-                                  labelWidth={this.state.labelWidth}
-                                  id="explore-city"
-                                />
-                              }
-                            >
-                              {['Bangalore','Mysore','Mumbai','Delhi','Patna'].map(city => (
-                                <option key={city + 'i'} value={city} className={classes.selectPaddingOpt}>
-                                  {city}
-                                </option>
-                              ))}
-                            </Select>
-                          </FormControl>
+                      
                       </Grid>
                   <Grid item>
                     <div className={classes.search}>
@@ -235,7 +208,7 @@ class Home extends Component{
                   </Grid>
                  </Grid>
               </div>
-            <br/><br/>
+            <br/>
                 <div className={["container","table-responsive"].join(' ')}>
                     <div className={["text-left"].join(' ')}>
                         <table className={["table", "table-dark "].join(' ')}>
@@ -343,7 +316,5 @@ class Home extends Component{
       }
   }
 }
-function mapStateToProps(state) {
-    return selectors.getAllValues(state);
-  }
-export default connect(mapStateToProps)(withStyles(styles)(Home));
+
+export default (withStyles(styles)(Home));

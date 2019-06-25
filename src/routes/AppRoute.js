@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import BankDetails from '../pages/BankDetails';
-import Home from '../pages/Home';
+import Home from '../pages/Home/dataProvider';
 import FavBank from '../pages/FavouriteBanks/index';
 
 class  AppRoutes extends React.Component{
