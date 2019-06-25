@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Fyle-Challenge-Bank-Search-App/precache-manifest.3fbcd9bf05cfef6ed9b751f9d32f5e5b.js"
+  "/Fyle-Challenge-Bank-Search-App/precache-manifest.b0f406b8636735aa60bc67cfce117bf2.js"
 );
 
 self.addEventListener('message', (event) => {
