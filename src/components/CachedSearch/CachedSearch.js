@@ -11,7 +11,7 @@ export default class CachedSearch {
     }
   
     changeQuery(query) {
-      if (query.length < 3) {
+      if (query.length < 0) {
         this.resultsHandler([]);
         return;
       }
@@ -19,13 +19,13 @@ export default class CachedSearch {
         this.cacheHits = this.cacheHits + 1;
         this.queryCount = this.queryCount + 1;
         this.cacheHitsHistory.concat(query);
-        console.log("retrieved query from cache:", query);
+        // console.log("retrieved query from cache:", query);
         this.resultsHandler(this.cache[query]);
       } else {
         this.searchFunction(query).then(results => {
           this.cache[query] = results;
           this.queryCount = this.queryCount + 1;
-          console.log("query added to cache:", query);
+          // console.log("query added to cache:", query);
           this.resultsHandler(results);
         });
       }

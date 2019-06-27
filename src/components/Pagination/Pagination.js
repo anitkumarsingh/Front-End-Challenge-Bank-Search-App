@@ -23,10 +23,7 @@ class Pagination extends React.Component {
             this.setPage(this.props.initialPage);
         }
     }
-    componentDidMount(){
-        console.log(this.props.pageSize);
-    }
-
+    
     componentDidUpdate(prevProps, prevState) {
         // reset page if items array has changed
         if (this.props.items !== prevProps.items) {
@@ -39,7 +36,6 @@ class Pagination extends React.Component {
     setPage(page) {
         var { items, pageSize } = this.props;
         // const { pageSize } = this.state.pageSize;
-        console.log(this.props.pageSize);
         var pager = this.state.pager;
 
         if (page < 1 || page > pager.totalPages) {
@@ -106,8 +102,8 @@ class Pagination extends React.Component {
     }
 
     render() {
-        const { pageSize } =this.props;
-        console.log(pageSize);
+        // const { pageSize } =this.props;
+        // console.log(pageSize);
         var pager = this.state.pager;
         if (!pager.pages || pager.pages.length <= 1) {
             // nothing will be displayed when there is only one page
