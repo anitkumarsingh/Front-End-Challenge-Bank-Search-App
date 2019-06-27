@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "00e35bd6cfabc6456af7972f53f9655a",
+    "revision": "40bc1a3c8123caa17aaa7d9aef380cb8",
     "url": "/Fyle-Challenge-Bank-Search-App/index.html"
   },
   {
-    "revision": "9d568b9eda6f10ced948",
+    "revision": "c34c390031550beed33f",
     "url": "/Fyle-Challenge-Bank-Search-App/static/css/main.210f2387.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Fyle-Challenge-Bank-Search-App/static/js/2.c2a00725.chunk.js"
   },
   {
-    "revision": "9d568b9eda6f10ced948",
-    "url": "/Fyle-Challenge-Bank-Search-App/static/js/main.9239f282.chunk.js"
+    "revision": "c34c390031550beed33f",
+    "url": "/Fyle-Challenge-Bank-Search-App/static/js/main.e0209741.chunk.js"
   },
   {
     "revision": "50556886a6973fe73298",
